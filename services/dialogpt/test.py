@@ -22,8 +22,7 @@ def test_respond():
     gold_result = [["I'm good, how are you?", 0.9], ["I like the new one.", 0.9]]
     result = requests.post(url, json={"utterances_histories": contexts}).json()
     assert [
-        all([len(text) > 0 for text in sample])
-        for sample in result
+        all([len(text) > 0 for text in sample]) for sample in result
     ], f"Got\n{result}\n, but expected:\n{gold_result}"
     print("Success")
 
