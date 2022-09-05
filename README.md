@@ -4,56 +4,61 @@
 
 To get architecture documentation, please refer to DeepPavlov Agent [readthedocs documentation](https://deeppavlov-agent.readthedocs.io).
 
-
 # Distributions
 
 We've already included six distributions: four of them are based on lightweight Deepy socialbot,
 one is a full-sized Dream chatbot (based on Alexa Prize Challenge version) in English and a Dream chatbot in Russian.
 
 ### Deepy Base
-Base version of Lunar assistant. 
+
+Base version of Lunar assistant.
 Deepy Base contains Spelling Preprocessing annotator,
 template-based Harvesters Maintenance Skill,
 and AIML-based open-domain Program-y Skill based on Dialog Flow Framework.
 
 ### Deepy Advanced
-Advanced version of Lunar assistant. 
+
+Advanced version of Lunar assistant.
 Deepy Advanced contains Spelling Preprocessing, Sentence Segmentation,
 Entity Linking and Intent Catcher annotators, Harvesters Maintenance GoBot Skill for goal-oriented responses,
 and AIML-based open-domain Program-y Skill based on Dialog Flow Framework.
 
 ### Deepy FAQ
-FAQ version of Lunar assistant. 
-Deepy FAQ contains Spelling Preprocessing annotator, 
+
+FAQ version of Lunar assistant.
+Deepy FAQ contains Spelling Preprocessing annotator,
 template-based Frequently Asked Questions Skill,
 and AIML-based open-domain Program-y Skill based on Dialog Flow Framework.
 
 ### Deepy GoBot
+
 Goal-oriented version of Lunar assistant.
 Deepy GoBot Base contains Spelling Preprocessing annotator,
 Harvesters Maintenance GoBot Skill for goal-oriented responses,
 and AIML-based open-domain Program-y Skill based on Dialog Flow Framework.
 
 ### Dream
+
 Full version of DeepPavlov Dream Socialbot.
-This is almost the same version of the DREAM socialbot as at 
+This is almost the same version of the DREAM socialbot as at
 [the end of Alexa Prize Challenge 4](https://d7qzviu3xw2xc.cloudfront.net/alexa/alexaprize/docs/sgc4/MIPT-DREAM.pdf).
 Some API services are replaced with trainable models.
 Some services (e.g., News Annotator, Game Skill, Weather Skill) require private keys for underlying APIs,
 most of them can be obtained for free.
 If you want to use these services in local deployments, add your keys to the environmental variables (e.g., `./.env`).
-This version of Dream Socialbot consumes a lot of resources 
-because of its modular architecture and original goals (participation in Alexa Prize Challenge). 
+This version of Dream Socialbot consumes a lot of resources
+because of its modular architecture and original goals (participation in Alexa Prize Challenge).
 We provide a demo of Dream Socialbot on [our website](https://demo.deeppavlov.ai).
 
-
 ### Dream Mini
+
 Mini version of DeepPavlov Dream Socialbot.
 This is a generative-based socialbot that uses [English DialoGPT model](https://huggingface.co/microsoft/DialoGPT-medium) to generate most of the responses. It also contains intent catcher and responder components to cover special user requests.
 [Link to the distribution.](https://github.com/deepmipt/dream/tree/main/assistant_dists/dream_mini)
 
 ### Dream Russian
-Russian version of DeepPavlov Dream Socialbot. This is a generative-based socialbot that uses [Russian DialoGPT model](https://huggingface.co/Grossmend/rudialogpt3_medium_based_on_gpt2) to generate most of the responses. It also contains intent catcher and responder components to cover special user requests. 
+
+Russian version of DeepPavlov Dream Socialbot. This is a generative-based socialbot that uses [Russian DialoGPT model](https://huggingface.co/Grossmend/rudialogpt3_medium_based_on_gpt2) to generate most of the responses. It also contains intent catcher and responder components to cover special user requests.
 [Link to the distribution.](https://github.com/deepmipt/dream/tree/main/assistant_dists/dream_russian)
 
 # Quick Start
@@ -64,38 +69,42 @@ Russian version of DeepPavlov Dream Socialbot. This is a generative-based social
 git clone https://github.com/deepmipt/dream.git
 ```
 
-
-### Install [docker](https://docs.docker.com/engine/install/) and [docker-compose](https://docs.docker.com/compose/install/) 
+### Install [docker](https://docs.docker.com/engine/install/) and [docker-compose](https://docs.docker.com/compose/install/)
 
 If you get a "Permission denied" error running docker-compose, make sure to [configure your docker user](https://docs.docker.com/engine/install/linux-postinstall/) correctly.
-
 
 ### Run one of the Dream distributions
 
 #### **Deepy Base**
+
 ```
 docker-compose -f docker-compose.yml -f assistant_dists/deepy_base/docker-compose.override.yml up --build
 ```
 
 #### **Deepy Advanced**
+
 ```
 docker-compose -f docker-compose.yml -f assistant_dists/deepy_adv/docker-compose.override.yml up --build
 ```
 
 #### **Deepy FAQ**
+
 ```
 docker-compose -f docker-compose.yml -f assistant_dists/deepy_faq/docker-compose.override.yml up --build
 ```
 
 #### **Deepy GoBot**
+
 ```
 docker-compose -f docker-compose.yml -f assistant_dists/deepy_gobot_base/docker-compose.override.yml up --build
 ```
 
 #### **Dream (via proxy)**
-The easiest way to try out Dream is to deploy it via proxy. 
+
+The easiest way to try out Dream is to deploy it via proxy.
 All the requests will be redirected to DeepPavlov API, so you don't have to use any local resources.
 See [proxy usage](#proxy-usage) for details.
+
 ```
 docker-compose -f docker-compose.yml -f assistant_dists/dream/docker-compose.override.yml -f assistant_dists/dream/dev.yml -f assistant_dists/dream/proxy.yml up --build
 ```
@@ -104,15 +113,19 @@ docker-compose -f docker-compose.yml -f assistant_dists/dream/docker-compose.ove
 
 **Please note, that DeepPavlov Dream components require a lot of resources.**
 Refer to the [components](#components) section to see estimated requirements.
+
 ```
 docker-compose -f docker-compose.yml -f assistant_dists/dream/docker-compose.override.yml -f assistant_dists/dream/dev.yml up --build
 ```
+
 We've also included a config with GPU allocations for multi-GPU environments.
 
 ```
 AGENT_PORT=4242 docker-compose -f docker-compose.yml -f assistant_dists/dream/docker-compose.override.yml -f assistant_dists/dream/dev.yml -f assistant_dists/dream/test.yml up
 ```
+
 When you need to restart particular docker container without re-building (make sure mapping in `assistant_dists/dream/dev.yml` is correct):
+
 ```
 AGENT_PORT=4242 docker-compose -f docker-compose.yml -f assistant_dists/dream/docker-compose.override.yml -f assistant_dists/dream/dev.yml restart container-name
 ```
@@ -122,6 +135,7 @@ AGENT_PORT=4242 docker-compose -f docker-compose.yml -f assistant_dists/dream/do
 DeepPavlov Agent provides several options for interaction: a command line interface, an HTTP API, and a Telegram bot 
 
 #### CLI
+
 In a separate terminal tab run:
 
 ```
@@ -131,6 +145,7 @@ docker-compose exec agent python -m deeppavlov_agent.run agent.channel=cmd agent
 Enter your username and have a chat with Dream!
 
 #### HTTP API
+
 Once you've started the bot, DeepPavlov's Agent API will run on `http://localhost:4242`.
 You can learn about the API from the [DeepPavlov Agent Docs](https://deeppavlov-agent.readthedocs.io/en/latest/intro/overview.html#http-api-server).
 
@@ -146,11 +161,12 @@ agent:
 **NOTE:** treat your Telegram token as a secret and do not commit it to public repositories!
 
 # Configuration and proxy usage
+
 Dream uses several docker-compose configuration files:
 
 `./docker-compose.yml` is the core config which includes containers for DeepPavlov Agent and mongo database;
 
-`./assistant_dists/*/docker-compose.override.yml` lists all components for the distribution; 
+`./assistant_dists/*/docker-compose.override.yml` lists all components for the distribution;
 
 `./assistant_dists/dream/dev.yml` includes volume bindings for easier Dream debugging;
 
@@ -158,6 +174,7 @@ Dream uses several docker-compose configuration files:
 
 If your deployment resources are limited, you can replace containers with their proxied copies hosted by DeepPavlov.
 To do this, override those container definitions inside `proxy.yml`, e.g.:
+
 ```
 convers-evaluator-annotator:
   command: ["nginx", "-g", "daemon off;"]
@@ -168,6 +185,7 @@ convers-evaluator-annotator:
     - PROXY_PASS=dream.deeppavlov.ai:8004
     - PORT=8004
 ```
+
 and include this config in your deployment command:
 
 ```
@@ -175,7 +193,6 @@ docker-compose -f docker-compose.yml -f assistant_dists/dream/docker-compose.ove
 ```
 
 By default, `proxy.yml` contains all available proxy definitions.
-
 
 # Components English Version
 
@@ -264,7 +281,6 @@ Dream Architecture is presented in the following image:
 | DFF Weather skill             | 1.4 GiB RAM                | **[New DFF version]** uses the OpenWeatherMap service to get the forecast for the user's location                                                                                                                  |
 | DFF Wiki skill                | 160 MiB RAM                | used for making scenarios with the extraction of entities, slot filling, facts insertion, and acknowledgements                                                                                                     |
 
-
 # Components Russian Version
 
 Dream Architecture is presented in the following image:
@@ -298,24 +314,27 @@ Dream Architecture is presented in the following image:
 | DFF Wiki skill         | 150 MiB RAM               | used for making scenarios with the extraction of entities, slot filling, facts insertion, and acknowledgements                      |
 
 # Papers
+
 ### Alexa Prize 3
+
 [Kuratov Y. et al. DREAM technical report for the Alexa Prize 2019 //Alexa Prize Proceedings. – 2020.](https://m.media-amazon.com/images/G/01/mobile-apps/dex/alexa/alexaprize/assets/challenge3/proceedings/Moscow-DREAM.pdf)
 
 ### Alexa Prize 4
-[Baymurzina D. et al. DREAM Technical Report for the Alexa Prize 4 //Alexa Prize Proceedings. – 2021.](https://d7qzviu3xw2xc.cloudfront.net/alexa/alexaprize/docs/sgc4/MIPT-DREAM.pdf)
 
+[Baymurzina D. et al. DREAM Technical Report for the Alexa Prize 4 //Alexa Prize Proceedings. – 2021.](https://d7qzviu3xw2xc.cloudfront.net/alexa/alexaprize/docs/sgc4/MIPT-DREAM.pdf)
 
 # License
 
 DeepPavlov Dream is licensed under Apache 2.0.
 
-Program-y (see `dream/skills/dff_program_y_skill`, `dream/skills/dff_program_y_wide_skill`, `dream/skills/dff_program_y_dangerous_skill`) 
+Program-y (see `dream/skills/dff_program_y_skill`, `dream/skills/dff_program_y_wide_skill`, `dream/skills/dff_program_y_dangerous_skill`)
 is licensed under Apache 2.0.
 Eliza (see `dream/skills/eliza`) is licensed under MIT License.
 
-
 ## Report creating
+
 For making certification `xlsx` - file with bot responses, you can use `xlsx_responder.py` script by executing
+
 ```shell
 docker-compose -f docker-compose.yml -f dev.yml exec -T -u $(id -u) agent python3 \
         utils/xlsx_responder.py --url http://0.0.0.0:4242 \
@@ -323,4 +342,5 @@ docker-compose -f docker-compose.yml -f dev.yml exec -T -u $(id -u) agent python
         --output 'tests/dream/output/test_questions_output.xlsx'\
       --cache tests/dream/output/test_questions_output_$(date --iso-8601=seconds).json
 ```
+
 Make sure all services are deployed. `--input` - `xlsx` file with certification questions, `--output` - `xlsx` file with bot responses, `--cache` - `json`, that contains a detailed markup and is used for a cache.

@@ -5,12 +5,12 @@ services:
       - ".:/dp-agent"
     ports:
       - 4242:4242
-  dff-program-y-skill:
+  midas-classification:
     volumes:
-      - "./skills/dff_program_y_skill:/src"
-      - "./common:/src/common"
+      - "./annotators/midas_classification:/src"
+      - "~/.deeppavlov:/root/.deeppavlov"
     ports:
-      - 8008:8008
+      - 8090:8090
   sentseg:
     volumes:
       - "./annotators/SentSeg:/src"
@@ -56,4 +56,16 @@ services:
       - "./services/sentence_ranker:/src"
     ports:
       - 8128:8128
+  dialogpt-persona-based:
+    volumes:
+      - "./services/dialogpt_persona_based:/src"
+      - "./common:/src/common"
+    ports:
+      - 8131:8131
+  relative-persona-extractor:
+    volumes:
+      - "./annotators/relative_persona_extractor:/src"
+      - "./common:/src/common"
+    ports:
+      - 8133:8133
 version: "3.7"
