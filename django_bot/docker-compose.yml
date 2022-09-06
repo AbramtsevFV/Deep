@@ -1,20 +1,6 @@
+version: "3"
+   
 services:
-  agent:
-    env_file: [.env]
-    command: sh -c 'bin/wait && python -m deeppavlov_agent.run'
-    build:
-      context: ./
-      dockerfile: dockerfile_agent
-    deploy:
-      resources:
-        limits:
-          memory: 4G
-        reservations:
-          memory: 2G
-
-  mongo:
-    command: mongod
-    image: mongo:4.0.0
   db:
     image: postgres
     ports:
@@ -25,15 +11,14 @@ services:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgre
-
+     
   web:
-    build:
-      context: .
-      dockerfile: ./django_bot/Dockerfile
+    build: .
     container_name: db_bot
     command:
-      - bash
-      - ./django_bot/docker/django-dev.sh
+        - bash
+        - ./docker/django-dev.sh
+        - ./docker/django-dev.sh
     volumes:
       - .:/code
     ports:
@@ -46,17 +31,12 @@ services:
       - db
   tg_bot:
     restart: unless-stopped
-    build:
-      context: .
-      dockerfile: ./django_bot/Dockerfile
+    build: .
     command:
       - bash
-      - ./django_bot/docker/bot.sh
+      - ./docker/bot.sh
     volumes:
       - .:/code
     depends_on:
       - db
       - web
-version: '3.7'
-
-
