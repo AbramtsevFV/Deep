@@ -136,3 +136,4 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 BASE_URL = os.environ.get("BASE_URL")
+API_TOKEN=os.environ.get("API_TOKEN")

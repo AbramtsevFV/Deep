@@ -6,7 +6,8 @@ from bot.models import UserTg
 from bot.services.models_service import save_and_get_user, save_request_response, get_standard_text
 from bot.services.parser import get_message
 
-API_TOKEN = '5426020191:AAFohIi1LmlC-zDftsYAj7udfbyJUJDeA58'
+from django_bot.settings import API_TOKEN
+
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
